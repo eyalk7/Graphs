@@ -205,3 +205,33 @@ vector<int> getConnectedComponentsUndirectedGraph(const Graph& graph) {
 
     return component;
 }
+
+set<Edge> kruskal(const Graph& G, const map<Edge,int>& w) {
+    UF uf(G.numOfVertices());
+
+    vector<pair<int,Edge>> sorted(w.size());
+    int i = 0;
+    for (auto edge : w) sorted[i++] = {edge.second, edge.first};
+    sort(sorted.begin(), sorted.end());
+
+    set<Edge> res;
+    // iterate over the edges from low weight to high weight
+    // if both vertices touching the edge not in the same set, put edge in MST
+    for (i = 0; i < (int)sorted.size(); i++) {
+        auto edge = sorted[i].second;
+        if (uf.find(edge.first) != uf.find(edge.second)){
+            res.insert(edge);
+            uf.uni(uf.find(edge.first), uf.find(edge.second));
+        }
+    }
+
+    return res;
+}
+
+set<Edge> prim(const Graph& G, const map<Edge,int>& w) {
+    // min heap of unused vertices sorted by min crossing edge
+
+    // pop min from the heap, insert the edge to the MST
+
+    // update heap for any of the new vertex's edges
+}

@@ -19,6 +19,34 @@ using std::min;
 const int infty = 1000000000;
 
 typedef pair<int,int> Edge;
+class UF {
+    vector<int> parent;
+    vector<int> size;
+public:
+    UF(int size) : parent(vector<int>(size,-1)), size(vector<int>(size,1)) {};
+    void uni(int a, int b) {
+        if (size[a] > size[b]) {
+            parent[b] = a;
+        } else {
+            parent[a] = b;
+        }
+    }
+    int find(int a) {
+        if (parent[a] == -1) return a;
+
+        int par = a;
+        while(parent[par] != -1) par = parent[par];
+
+        int tmp;
+        while (parent[a] != par) {
+            tmp = parent[a];
+            parent[a] = par;
+            a = tmp;
+        }
+
+        return par;
+    }
+};
 
 class Graph {
 public:
@@ -87,7 +115,7 @@ vector<int> getLongestPathDAG(const Graph& graph, int s, int t);
  */
 vector<int> shortestLengthsOfTwoColorChangingPath(const Graph& graph, map<Edge,char>& color, int s);
 
-/**
+/** todo : not working
  * @param graph - undirected graph
  * @param weight - weight function E -> {0,1}
  * @param s - starting vertex
@@ -101,4 +129,13 @@ vector<int> shortestLengthsOfPathsZeroOneGraph(const Graph& graph, map<Edge,int>
  */
 vector<int> getConnectedComponentsUndirectedGraph(const Graph& graph);
 
+/**
+ * Kruskal
+ */
+ set<Edge> kruskal(const Graph& G, const map<Edge,int>& w);
+
+ /**
+  * prim
+  */
+ set<Edge> prim(const Graph& G, const map<Edge,int>& w);
 #endif //GRAPHS_GRAPH_H
